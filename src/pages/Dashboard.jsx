@@ -7,7 +7,7 @@ import TaskList from "../components/tasks/TaskList";
 import TaskForm from "../components/tasks/TaskForm";
 import EditTaskModal from "../components/tasks/EditTaskModal";
 import StatsSection from "../components/dashboard/StatsSection";
-import ProgressBar from "../components/dashboard/ProgressBar";
+import ProgressBar from "../components/dashboard/progressBar";
 import UserModal from "../components/ui/UserModal";
 import Loader from "../components/ui/Loader";
 
