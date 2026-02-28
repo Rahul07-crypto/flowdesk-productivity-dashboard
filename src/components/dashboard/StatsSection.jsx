@@ -1,51 +1,54 @@
+import {
+  CheckCircle,
+  ListTodo,
+  Clock,
+  TrendingUp,
+} from "lucide-react";
 import StatCard from "./StatCard";
 
 export default function StatsSection({ tasks }) {
-
   const total = tasks.length;
-
-  const completed = tasks.filter(
-    (t) => t.completed
-  ).length;
-
+  const completed = tasks.filter((t) => t.completed).length;
   const pending = total - completed;
-
-  const productivity =
-    total === 0
-      ? 0
-      : Math.round((completed / total) * 100);
+  const percent = total
+    ? Math.round((completed / total) * 100)
+    : 0;
 
   return (
     <div
       style={{
-        display: "flex",
-        gap: "16px",
-        marginBottom: "24px",
-        flexWrap: "wrap",
+        display: "grid",
+        gap: "24px",
+        gridTemplateColumns:
+          "repeat(auto-fit,minmax(220px,1fr))",
       }}
     >
       <StatCard
-        title="Total Tasks"
-        value={total}
-        subtitle="All created tasks"
+        icon={<ListTodo size={20} />}
+        number={total}
+        label="Total Tasks"
+        trend="+8% this week"
       />
 
       <StatCard
-        title="Completed"
-        value={completed}
-        subtitle="Tasks finished"
+        icon={<CheckCircle size={20} />}
+        number={completed}
+        label="Completed"
+        trend="+5% this week"
       />
 
       <StatCard
-        title="Pending"
-        value={pending}
-        subtitle="Remaining work"
+        icon={<Clock size={20} />}
+        number={pending}
+        label="Pending"
+        trend="-2% this week"
       />
 
       <StatCard
-        title="Productivity"
-        value={`${productivity}%`}
-        subtitle="Completion rate"
+        icon={<TrendingUp size={20} />}
+        number={`${percent}%`}
+        label="Productivity"
+        trend="Improving"
       />
     </div>
   );

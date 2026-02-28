@@ -12,7 +12,6 @@ import UserModal from "../components/ui/UserModal";
 import Loader from "../components/ui/Loader";
 
 export default function Dashboard() {
-
   const { tasks, setTasks } = useTasks();
   const { addNotification } = useNotifications();
   const { name, saveName } = useUser();
@@ -24,28 +23,25 @@ export default function Dashboard() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
 
-  // FAKE LOADER
   useEffect(() => {
-    setTimeout(() => setLoading(false), 700);
+    setTimeout(() => setLoading(false), 600);
   }, []);
 
   function greeting() {
-    const h = new Date().getHours();
-    if (h < 12) return "morning";
-    if (h < 18) return "afternoon";
+    const hour = new Date().getHours();
+    if (hour < 12) return "morning";
+    if (hour < 18) return "afternoon";
     return "evening";
   }
 
-  // ======================
-  // TASK ACTIONS
-  // ======================
-
+  // ADD TASK
   const addTask = (task) => {
     setTasks([...tasks, task]);
     addNotification(`Task "${task.title}" added`);
     setShowModal(false);
   };
 
+  // TOGGLE TASK
   const toggleTask = (id) => {
     setTasks(
       tasks.map((t) =>
@@ -55,22 +51,25 @@ export default function Dashboard() {
     addNotification("Task status updated");
   };
 
+  // DELETE TASK
   const deleteTask = (id) => {
     if (!window.confirm("Delete task?")) return;
     setTasks(tasks.filter((t) => t.id !== id));
     addNotification("Task deleted");
   };
 
-  const updateTask = (updated) => {
-    setTasks(tasks.map((t) => (t.id === updated.id ? updated : t)));
+  // UPDATE TASK
+  const updateTask = (updatedTask) => {
+    setTasks(
+      tasks.map((t) =>
+        t.id === updatedTask.id ? updatedTask : t
+      )
+    );
     setEditingTask(null);
     addNotification("Task updated");
   };
 
-  // ======================
-  // FILTERS
-  // ======================
-
+  // FILTER TASKS
   const filteredTasks = tasks
     .filter((t) =>
       t.title.toLowerCase().includes(search.toLowerCase())
@@ -79,9 +78,10 @@ export default function Dashboard() {
       filter === "All" ? true : t.category === filter
     );
 
-  const completed = tasks.filter((t) => t.completed).length;
+  // PRODUCTIVITY %
+  const completedCount = tasks.filter((t) => t.completed).length;
   const percent = tasks.length
-    ? Math.round((completed / tasks.length) * 100)
+    ? Math.round((completedCount / tasks.length) * 100)
     : 0;
 
   if (loading) return <Loader />;
@@ -90,26 +90,34 @@ export default function Dashboard() {
     <>
       {!name && <UserModal onSave={saveName} />}
 
-      {/* WELCOME */}
-      <div className="card" style={{ padding: "20px", marginBottom: "24px" }}>
-        <h2>
+      {/* WELCOME SECTION */}
+      <div className="card" style={{ marginBottom: "32px" }}>
+        <h1>
           Good {greeting()}, {name} 👋
-        </h2>
-        <p style={{ color: "#9ca3af" }}>
-          Here’s your productivity overview.
-        </p>
+        </h1>
+        <small>
+          Manage tasks, monitor progress, and stay productive with FlowDesk.
+        </small>
       </div>
 
-      <StatsSection tasks={tasks} />
-      <ProgressBar percent={percent} />
+      {/* STATS SECTION */}
+      <div style={{ marginBottom: "32px" }}>
+        <StatsSection tasks={tasks} />
+      </div>
+
+      {/* PROGRESS BAR */}
+      <div style={{ marginBottom: "32px" }}>
+        <ProgressBar percent={percent} />
+      </div>
 
       {/* CONTROLS */}
       <div
         style={{
+          marginBottom: "32px",
           display: "flex",
-          gap: "12px",
-          marginBottom: "24px",
+          gap: "16px",
           flexWrap: "wrap",
+          alignItems: "center",
         }}
       >
         <input
@@ -132,6 +140,7 @@ export default function Dashboard() {
         </button>
       </div>
 
+      {/* TASK GRID */}
       <TaskList
         tasks={filteredTasks}
         onToggle={toggleTask}
@@ -139,10 +148,15 @@ export default function Dashboard() {
         onEdit={setEditingTask}
       />
 
+      {/* ADD TASK MODAL */}
       {showModal && (
-        <TaskForm onAdd={addTask} onClose={() => setShowModal(false)} />
+        <TaskForm
+          onAdd={addTask}
+          onClose={() => setShowModal(false)}
+        />
       )}
 
+      {/* EDIT TASK MODAL */}
       {editingTask && (
         <EditTaskModal
           task={editingTask}

@@ -6,32 +6,46 @@ export default function TaskList({
   onDelete,
   onEdit,
 }) {
-
   // EMPTY STATE
-  if (!tasks.length) {
+  if (!tasks || tasks.length === 0) {
     return (
       <div
         className="card"
         style={{
-          padding: "48px",
           textAlign: "center",
+          padding: "48px 24px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+          alignItems: "center",
         }}
       >
-        <h3>✨ No tasks yet</h3>
-        <p style={{ color: "#9ca3af" }}>
-          Create your first task to begin.
+        <h2 style={{ fontSize: "22px" }}>
+          ✨ No tasks yet
+        </h2>
+
+        <p
+          style={{
+            fontSize: "14px",
+            color: "#9ca3af",
+            maxWidth: "300px",
+          }}
+        >
+          Create your first task to begin managing
+          your productivity with FlowDesk.
         </p>
       </div>
     );
   }
 
+  // TASK GRID
   return (
     <div
       style={{
         display: "grid",
+        gap: "24px",
         gridTemplateColumns:
-          "repeat(auto-fill, minmax(250px, 1fr))",
-        gap: "16px",
+          "repeat(auto-fit, minmax(280px, 1fr))",
       }}
     >
       {tasks.map((task) => (

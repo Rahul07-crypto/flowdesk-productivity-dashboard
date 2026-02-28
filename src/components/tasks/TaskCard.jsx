@@ -4,94 +4,98 @@ export default function TaskCard({
   onDelete,
   onEdit,
 }) {
+  const priorityStyles = {
+    High: {
+      background: "rgba(239,68,68,0.15)",
+      color: "#ef4444",
+    },
+    Medium: {
+      background: "rgba(251,191,36,0.15)",
+      color: "#fbbf24",
+    },
+    Low: {
+      background: "rgba(34,197,94,0.15)",
+      color: "#22c55e",
+    },
+  };
+
   return (
     <div
       className="card"
       style={{
         padding: "16px",
-        transition: "all 0.2s ease",
+        display: "flex",
+        flexDirection: "column",
+        gap: "12px",
       }}
     >
       {/* TITLE */}
-      <h3>{task.title}</h3>
+      <h2
+        style={{
+          fontSize: "20px",
+          fontWeight: "600",
+        }}
+      >
+        {task.title}
+      </h2>
 
       {/* DESCRIPTION */}
       <p
         style={{
+          fontSize: "14px",
           color: "#9ca3af",
-          margin: "8px 0",
+          lineHeight: "1.5",
         }}
       >
         {task.description}
       </p>
 
-      {/* META INFO */}
-      <div
-        style={{
-          fontSize: "14px",
-          marginBottom: "10px",
-        }}
-      >
-        📂 {task.category} | ⚡ {task.priority}
+      {/* BADGES */}
+      <div style={{ display: "flex", gap: "8px" }}>
+        <span
+          style={{
+            padding: "4px 10px",
+            borderRadius: "6px",
+            fontSize: "12px",
+            fontWeight: "500",
+            ...priorityStyles[task.priority],
+          }}
+        >
+          {task.priority}
+        </span>
+
+        <span
+          style={{
+            padding: "4px 10px",
+            borderRadius: "6px",
+            fontSize: "12px",
+            background: "#1f2937",
+            color: "#9ca3af",
+          }}
+        >
+          {task.category}
+        </span>
       </div>
 
-      {/* STATUS */}
-      <p>
-        Status:{" "}
-        {task.completed
-          ? "✅ Completed"
-          : "⏳ Pending"}
-      </p>
-
-      {/* ACTION BUTTONS */}
+      {/* ACTIONS */}
       <div
         style={{
-          marginTop: "12px",
           display: "flex",
           gap: "8px",
+          marginTop: "4px",
         }}
       >
-        {/* TOGGLE */}
-        <button
-          onClick={() => onToggle(task.id)}
-          style={{
-            flex: 1,
-            background: "#6366f1",
-            border: "none",
-            color: "white",
-            padding: "6px",
-            borderRadius: "6px",
-          }}
-        >
-          Toggle
+        <button onClick={() => onToggle(task.id)}>
+          {task.completed ? "Undo" : "Complete"}
         </button>
 
-        {/* EDIT */}
-        <button
-          onClick={() => onEdit(task)}
-          style={{
-            flex: 1,
-            background: "#22c55e",
-            border: "none",
-            color: "white",
-            padding: "6px",
-            borderRadius: "6px",
-          }}
-        >
+        <button onClick={() => onEdit(task)}>
           Edit
         </button>
 
-        {/* DELETE */}
         <button
+          style={{ background: "#ef4444" }}
           onClick={() => onDelete(task.id)}
-          style={{
-            flex: 1,
-            background: "#ef4444",
-            border: "none",
-            color: "white",
-            padding: "6px",
-            borderRadius: "6px",
-          }}
         >
           Delete
         </button>

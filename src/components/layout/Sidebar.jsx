@@ -1,71 +1,65 @@
 import { NavLink } from "react-router-dom";
 
-export default function Sidebar({ isOpen, closeSidebar }) {
-  const linkStyle = {
-    display: "block",
-    padding: "10px 0",
-    color: "#e5e7eb",
+export default function Sidebar() {
+  const baseStyle = {
+    padding: "16px",
+    borderRadius: "8px",
     textDecoration: "none",
-  };
-
-  const activeStyle = {
-    color: "#6366f1",
-    fontWeight: "600",
-  };
-
-  const handleClick = () => {
-    // auto close sidebar on mobile
-    if (window.innerWidth < 768) {
-      closeSidebar();
-    }
+    color: "#e5e7eb",
+    display: "block",
+    transition: "all 0.2s ease",
   };
 
   return (
-    <aside
-      className={`sidebar ${isOpen ? "open" : ""}`}
+    <div
       style={{
         width: "240px",
-        background: "#111827",
-        padding: "24px",
+        padding: "24px 16px",
+        borderRight: "1px solid #1f2937",
+        background: "#0f172a",
       }}
     >
-      <h2 style={{ color: "#6366f1", marginBottom: "32px" }}>
-        FlowDesk
-      </h2>
+      <h2 style={{ marginBottom: "32px" }}>FlowDesk</h2>
 
-      <nav>
-        <NavLink to="/" style={linkStyle} onClick={handleClick}>
-          {({ isActive }) => (
-            <span style={isActive ? activeStyle : {}}>
-              📊 Dashboard
-            </span>
-          )}
-        </NavLink>
+      <NavLink
+        to="/"
+        style={({ isActive }) => ({
+          ...baseStyle,
+          background: isActive ? "#1f2937" : "transparent",
+        })}
+      >
+        Dashboard
+      </NavLink>
 
-        <NavLink to="/tasks" style={linkStyle} onClick={handleClick}>
-          {({ isActive }) => (
-            <span style={isActive ? activeStyle : {}}>
-              ✅ Tasks
-            </span>
-          )}
-        </NavLink>
+      <NavLink
+        to="/tasks"
+        style={({ isActive }) => ({
+          ...baseStyle,
+          background: isActive ? "#1f2937" : "transparent",
+        })}
+      >
+        Tasks
+      </NavLink>
 
-        <NavLink to="/analytics" style={linkStyle} onClick={handleClick}>
-          {({ isActive }) => (
-            <span style={isActive ? activeStyle : {}}>
-              📈 Analytics
-            </span>
-          )}
-        </NavLink>
+      <NavLink
+        to="/analytics"
+        style={({ isActive }) => ({
+          ...baseStyle,
+          background: isActive ? "#1f2937" : "transparent",
+        })}
+      >
+        Analytics
+      </NavLink>
 
-        <NavLink to="/settings" style={linkStyle} onClick={handleClick}>
-          {({ isActive }) => (
-            <span style={isActive ? activeStyle : {}}>
-              ⚙ Settings
-            </span>
-          )}
-        </NavLink>
-      </nav>
-    </aside>
+      <NavLink
+        to="/settings"
+        style={({ isActive }) => ({
+          ...baseStyle,
+          background: isActive ? "#1f2937" : "transparent",
+        })}
+      >
+        Settings
+      </NavLink>
+    </div>
   );
 }
